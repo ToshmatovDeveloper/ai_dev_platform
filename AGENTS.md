@@ -1,9 +1,13 @@
 # ai_dev_platform
 
+AI-first development platform. Customer requirements live in `customer-requirements(1).md`.
+
 ## Agent skills
 
 ### Domain docs
 
-Single-context: `DOMAIN.md` at the repo root holds the project vocabulary, and decisions live in `docs/adr/`. See `docs/agents/domain.md`.
+Project vocabulary lives in `DOMAIN.md`; decisions live in `docs/adr/`. See `docs/agents/domain.md`.
 
-Project skills live in `.opencode/skills/`; after cloning, run `node scripts/link-project-skills.mjs` to expose them to Claude Code. See `.opencode/SKILLS.md`.
+### Setup
+
+After cloning, run `node scripts/link-project-skills.mjs` so Claude Code finds the skills in `.opencode/skills/`.
