@@ -1,12 +1,21 @@
 # ai_dev_platform
 
-AI-first development platform. Customer requirements live in `customer-requirements(1).md`.
+AI-first development platform. The project brief and customer requirements live in
+`customer-requirements(1).md` — read it before planning work.
 
 ## Agent skills
 
+### Issue tracker
+
+Issues and specs live as GitHub issues in `ToshmatovDeveloper/ai_dev_platform`, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Five canonical roles with default strings: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
 ### Domain docs
 
-Project vocabulary lives in `DOMAIN.md`; decisions live in `docs/adr/`. See `docs/agents/domain.md`.
+Single-context: `DOMAIN.md` at the repo root and decisions in `docs/adr/`. See `docs/agents/domain.md`.
 
 ### Setup
 
