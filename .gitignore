@@ -1,0 +1,3 @@
+# Project skills live in .opencode/skills and are linked into other agents.
+# The links are recreated by scripts/link-project-skills.mjs after cloning.
+.claude/skills
