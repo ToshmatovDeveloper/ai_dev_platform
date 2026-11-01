@@ -6,7 +6,21 @@ Project skills are copied from [mattpocock/skills](https://github.com/mattpocock
 - Installed: 2026-11-01
 - Scope: `skills/engineering` and `skills/productivity` only. No plugins, no global install.
 - `mattpocock/skills` skill `setup-matt-pocock-skills` is installed but **not run**: the issue tracker
-  and domain-doc layout are not configured yet.
+  is not configured. The domain-doc layout is configured by hand instead (see below).
+
+## Local changes to the copies
+
+The copies are not verbatim. This project calls its term dictionary `DOMAIN.md`, so every
+project-glossary reference is renamed:
+
+| Upstream            | Here              |
+| ------------------- | ----------------- |
+| `GLOSSARY.md`       | `DOMAIN.md`       |
+| `GLOSSARY-MAP.md`   | `DOMAIN-MAP.md`   |
+| `GLOSSARY-FORMAT.md`| `DOMAIN-FORMAT.md`|
+
+Re-apply these renames after copying a newer upstream version, or the skills will point at files
+this repo does not have.
 
 ## Layout
 
