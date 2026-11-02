@@ -1,32 +1,32 @@
-# Domain Docs
+# Документация домена
 
-How the engineering skills consume this repo's domain documentation when exploring the codebase.
+Как инженерные скиллы используют доменную документацию этого репозитория при исследовании кодовой базы.
 
-## Before exploring, read these
+## Перед исследованием прочитай
 
-- **`DOMAIN.md`** at the repo root, or
-- **`DOMAIN-MAP.md`** at the repo root if it exists: it points at one `DOMAIN.md` per context. Read each one relevant to the topic.
-- **`docs/adr/`**: read ADRs that touch the area you're about to work in. In multi-context repos, also check `src/<context>/docs/adr/` for context-scoped decisions.
+- **`DOMAIN.md`** в корне репозитория, или
+- **`DOMAIN-MAP.md`** в корне репозитория, если он существует: он указывает на один `DOMAIN.md` на каждый контекст. Читай каждый, релевантный теме.
+- **`docs/adr/`**: читай ADR, затрагивающие область, в которой собираешься работать. В мультиконтекстных репозиториях также проверяй `src/<context>/docs/adr/` на предмет решений в рамках контекста.
 
-If any of these files don't exist, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. The `/domain-modeling` skill (reached via `/grill-with-docs` and `/improve-codebase-architecture`) creates them lazily when terms or decisions actually get resolved.
+Если каких-либо из этих файлов нет, **продолжай молча**. Не отмечай их отсутствие; не предлагай создавать их заранее. Скилл `/domain-modeling` (достигаемый через `/grill-with-docs` и `/improve-codebase-architecture`) создаёт их лениво, когда термины или решения действительно проясняются.
 
-## Layout
+## Структура
 
-This repo is **single-context**:
+Этот репозиторий **одноконтекстный**:
 
-- `DOMAIN.md` at the repo root — the project vocabulary: terms, definitions, and the synonyms each term rules out.
-- `docs/adr/` — architecture decision records, one file per decision.
+- `DOMAIN.md` в корне репозитория — словарь проекта: термины, определения и синонимы, которые каждый термин исключает.
+- `docs/adr/` — записи об архитектурных решениях, один файл на решение.
 
-Multi-context layout is not in use. Adopt it only when the repo splits into separately named contexts: a root `DOMAIN-MAP.md` pointing at one `DOMAIN.md` per context, each with its own `docs/adr/`.
+Мультиконтекстная структура не используется. Применяй её только когда репозиторий разделится на отдельно именованные контексты: корневой `DOMAIN-MAP.md`, указывающий на один `DOMAIN.md` на каждый контекст, каждый со своей `docs/adr/`.
 
-## Use the domain vocabulary
+## Используй доменный словарь
 
-When your output names a domain concept (in an issue title, a refactor proposal, a hypothesis, a test name), use the term as defined in `DOMAIN.md`. Don't drift to synonyms the term entry explicitly avoids.
+Когда твой вывод называет доменное понятие (в заголовке задачи, предложении по рефакторингу, гипотезе, названии теста), используй термин в том виде, как он определён в `DOMAIN.md`. Не уходи к синонимам, которых статья термина явно избегает.
 
-If the concept you need isn't in `DOMAIN.md` yet, that's a signal: either you're inventing language the project doesn't use (reconsider) or there's a real gap (note it for `/domain-modeling`).
+Если нужного понятия ещё нет в `DOMAIN.md`, это сигнал: либо ты изобретаешь язык, который проект не использует (пересмотри), либо есть реальный пробел (отметь его для `/domain-modeling`).
 
-## Flag ADR conflicts
+## Отмечай конфликты с ADR
 
-If your output contradicts an existing ADR, surface it explicitly rather than silently overriding:
+Если твой вывод противоречит существующему ADR, явно обозначь это, а не переопределяй молча:
 
-> _Contradicts ADR-0007 (event-sourced orders), but worth reopening because…_
+> _Противоречит ADR-0007 (событийно-ориентированные заказы), но стоит переоткрыть, потому что…_
