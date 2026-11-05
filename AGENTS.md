@@ -17,6 +17,10 @@ Before assigning or removing a triage label, read `docs/agents/triage-labels.md`
 
 Before working with domain terms or architecture decisions, read `docs/agents/domain.md`.
 
+### Agent workflow
+
+Before you take a task labeled `ready-for-agent`, read `docs/agents/agent-workflow.md`.
+
 ### Setup
 
 After cloning, run `node scripts/link-project-skills.mjs` so Claude Code finds the skills in `.opencode/skills/`.
