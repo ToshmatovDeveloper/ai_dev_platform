@@ -21,6 +21,10 @@ Before working with domain terms or architecture decisions, read `docs/agents/do
 
 Before you take a task labeled `ready-for-agent`, read `docs/agents/agent-workflow.md`.
 
+### Testing
+
+Before you write, change, or review tests, read `docs/agents/testing.md`.
+
 ### Setup
 
 After cloning, run `node scripts/link-project-skills.mjs` so Claude Code finds the skills in `.opencode/skills/`.
