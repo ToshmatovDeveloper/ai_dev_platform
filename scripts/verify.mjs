@@ -3,6 +3,9 @@ import { accessSync, constants, existsSync, readdirSync, readFileSync, statSync 
 import { delimiter, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { PART_NAMES, changedParts } from "./changed-parts.mjs";
+import { verifyPlan } from "./verify-plan.mjs";
+
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const full = process.argv.includes("--full");
 const failures = [];
@@ -92,24 +95,95 @@ function packageScripts(path) {
   }
 }
 
+function git(args) {
+  return execFileSync("git", args, {
+    cwd: repoRoot,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+  }).trim();
+}
+
+function mergeBase() {
+  for (const ref of ["origin/main", "main"]) {
+    try {
+      const base = git(["merge-base", "HEAD", ref]);
+
+      if (base) {
+        return base;
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  return null;
+}
+
+function collectChangedFiles(base) {
+  const files = new Set();
+
+  const add = (text) => {
+    for (const line of text.split(/\r?\n/)) {
+      const file = line.trim();
+
+      if (file) {
+        files.add(file);
+      }
+    }
+  };
+
+  if (base) {
+    add(git(["diff", "--name-only", base]));
+  }
+
+  add(git(["ls-files", "--others", "--exclude-standard"]));
+
+  return [...files];
+}
+
+function changedPartsFromMain() {
+  const base = mergeBase();
+
+  if (!base) {
+    console.log("note: could not determine base branch; running all checks");
+    return Object.fromEntries(PART_NAMES.map((name) => [name, true]));
+  }
+
+  return changedParts(collectChangedFiles(base));
+}
+
+const parts = full ? {} : changedPartsFromMain();
+const plan = verifyPlan(parts, full);
+
 const hasSolution = rootSolution();
 const webPackageJson = join(repoRoot, "apps", "web", "package.json");
 const hasWebPackage = existsSync(webPackageJson);
 
-run("documentation links", "node", ["scripts/check-doc-links.mjs"]);
+if (plan.docs) {
+  run("documentation links", "node", ["scripts/check-doc-links.mjs"]);
+} else {
+  skipped("documentation links: no documentation changes vs main");
+}
 
-if (hasSolution) {
+if (plan.dotnet && hasSolution) {
   run("dotnet build", "dotnet", ["build"]);
   run("dotnet test", "dotnet", ["test"]);
+} else if (!plan.dotnet) {
+  skipped("dotnet build: no .NET changes vs main");
+  skipped("dotnet test: no .NET changes vs main");
 } else {
   skipped("dotnet build: no *.sln at repository root");
   skipped("dotnet test: no *.sln at repository root");
 }
 
-if (hasWebPackage) {
+if (plan.web && hasWebPackage) {
   run("pnpm lint", "pnpm", ["--dir", "apps/web", "lint"]);
   run("pnpm typecheck", "pnpm", ["--dir", "apps/web", "typecheck"]);
   run("pnpm test", "pnpm", ["--dir", "apps/web", "test"]);
+} else if (!plan.web) {
+  skipped("pnpm lint: no web changes vs main");
+  skipped("pnpm typecheck: no web changes vs main");
+  skipped("pnpm test: no web changes vs main");
 } else {
   skipped("pnpm lint: apps/web/package.json not found");
   skipped("pnpm typecheck: apps/web/package.json not found");
