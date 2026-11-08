@@ -23,7 +23,7 @@ Before you take a task labeled `ready-for-agent`, read `docs/agents/agent-workfl
 
 ### Testing
 
-Before you write, change, or review tests, read `docs/agents/testing.md`.
+Before you write, change, or review tests, read `docs/agents/testing.md` and `docs/adr/0012-tests-at-public-seams-on-real-infrastructure.md`.
 
 ### Setup
 

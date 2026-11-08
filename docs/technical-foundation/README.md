@@ -160,6 +160,7 @@
 - [0009 — Структура репозитория и версии рантаймов](../adr/0009-repository-structure-and-runtime.md)
 - [0010 — Стек фронтенда](../adr/0010-frontend-stack.md)
 - [0011 — Локальное окружение, конфигурация и эксплуатация](../adr/0011-local-environment-config-and-operations.md)
+- [0012 — Тесты на публичных швах и реальной инфраструктуре](../adr/0012-tests-at-public-seams-on-real-infrastructure.md)
 
 ## Следующие шаги
 
