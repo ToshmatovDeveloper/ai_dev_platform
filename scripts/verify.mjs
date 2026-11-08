@@ -190,6 +190,12 @@ if (plan.web && hasWebPackage) {
   skipped("pnpm test: apps/web/package.json not found");
 }
 
+if (plan.scripts) {
+  run("scripts tests", "node", ["--test", "scripts/**/*.test.mjs"]);
+} else {
+  skipped("scripts tests: no scripts changes vs main");
+}
+
 if (full) {
   if (hasSolution) {
     run("dotnet vulnerability audit", "dotnet", [

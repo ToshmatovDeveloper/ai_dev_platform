@@ -23,6 +23,7 @@ test("docs-only change runs documentation checks only", () => {
     docs: true,
     dotnet: false,
     web: false,
+    scripts: false,
   });
 });
 
@@ -31,6 +32,7 @@ test("api-only change runs .NET checks", () => {
     docs: true,
     dotnet: true,
     web: false,
+    scripts: false,
   });
 });
 
@@ -39,6 +41,7 @@ test("web-only change runs web checks", () => {
     docs: true,
     dotnet: false,
     web: true,
+    scripts: false,
   });
 });
 
@@ -47,6 +50,7 @@ test("modules-only change runs .NET checks", () => {
     docs: true,
     dotnet: true,
     web: false,
+    scripts: false,
   });
 });
 
@@ -55,6 +59,7 @@ test("shared-only change runs .NET checks", () => {
     docs: true,
     dotnet: true,
     web: false,
+    scripts: false,
   });
 });
 
@@ -63,19 +68,36 @@ test("tests-only change runs .NET checks", () => {
     docs: true,
     dotnet: true,
     web: false,
+    scripts: false,
+  });
+});
+
+test("scripts-only change runs script tests", () => {
+  assert.deepEqual(verifyPlan(parts({ scripts: true }), false), {
+    docs: true,
+    dotnet: false,
+    web: false,
+    scripts: true,
   });
 });
 
 test("full mode always runs every check", () => {
-  assert.deepEqual(verifyPlan(parts(), true), { docs: true, dotnet: true, web: true });
+  assert.deepEqual(verifyPlan(parts(), true), {
+    docs: true,
+    dotnet: true,
+    web: true,
+    scripts: true,
+  });
   assert.deepEqual(verifyPlan(parts({ api: true }), true), {
     docs: true,
     dotnet: true,
     web: true,
+    scripts: true,
   });
   assert.deepEqual(verifyPlan(parts({ docs: true }), true), {
     docs: true,
     dotnet: true,
     web: true,
+    scripts: true,
   });
 });

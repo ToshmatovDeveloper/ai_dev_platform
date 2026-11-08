@@ -1,6 +1,6 @@
 export function verifyPlan(parts, full) {
   if (full) {
-    return { docs: true, dotnet: true, web: true };
+    return { docs: true, dotnet: true, web: true, scripts: true };
   }
 
   const hasDotnetChanges = Boolean(
@@ -11,5 +11,6 @@ export function verifyPlan(parts, full) {
     docs: true,
     dotnet: hasDotnetChanges,
     web: Boolean(parts && parts.web),
+    scripts: Boolean(parts && parts.scripts),
   };
 }
