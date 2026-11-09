@@ -22,6 +22,12 @@
 
 **PR как поверхность запросов: нет.** _(Поставь `да`, если этот репозиторий трактует внешние PR как запросы на фичи; `/triage` читает этот флаг.)_
 
+Если поставлено `да`, PR проходят через те же метки и состояния, что и задачи, используя эквиваленты `gh pr`:
+
+- **Прочитать PR**: `gh pr view <number>`, затем `gh pr view <number> --comments` (вне TTY `--comments` печатает только комментарии, без тела), и `gh pr diff <number>` для просмотра изменения.
+- **Список внешних PR для триажа**: `gh api --paginate 'repos/{owner}/{repo}/pulls?state=open' --jq '.[] | select(.author_association | IN("OWNER","MEMBER","COLLABORATOR") | not) | {number, title, author: .user.login, author_association, labels: [.labels[].name]}'`.
+- **Комментарий / метка / закрытие**: `gh pr comment`, `gh pr edit --add-label`/`--remove-label`, `gh pr close`.
+
 GitHub использует одно пространство номеров для задач и PR, поэтому голый `#42` может быть любым из них: разрешай через `gh pr view 42` и при неудаче через `gh issue view 42`.
 
 ## Когда скилл говорит «опубликуй в трекере задач»
