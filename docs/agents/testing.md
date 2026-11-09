@@ -1,6 +1,6 @@
 # Правила тестирования
 
-Документ задаёт правила тестов для агентов. Читай его перед изменением тестов, перед ревью тестов и перед PR с тестами. Термины — `DOMAIN.md`. Полный путь — `docs/agents/agent-workflow.md`. Контракт — `docs/technical-foundation/web-api-contract.md`. Решение — [ADR 0012](../adr/0012-tests-at-public-seams-on-real-infrastructure.md). Стек: ASP.NET Core на .NET 10, xUnit v3 на Microsoft.Testing.Platform.
+Документ задаёт правила тестов для агентов. Читай его перед любой работой с тестами. Термины — `DOMAIN.md`. Полный путь — `docs/agents/agent-workflow.md`. Контракт — `docs/technical-foundation/web-api-contract.md`. Решение — [ADR 0012](../adr/0012-tests-at-public-seams-on-real-infrastructure.md). Стек: ASP.NET Core на .NET 10, xUnit v3 на Microsoft.Testing.Platform.
 
 ## Главное правило
 
@@ -8,25 +8,22 @@
 
 Проверяй результат через тот же шов.
 
-Публичный шов приложения — HTTP endpoint. Каждый модуль имеет интеграционный тест через HTTP. Не создавай второй шов на обработчиках или `*.Contracts`.
+Публичный шов приложения — HTTP endpoint. Каждый модуль имеет интеграционный тест через HTTP.
 
 ## Виды тестов и швы
 
 | Вид | Шов и место | Что проверяет | Инструмент | Образец |
 | --- | --- | --- | --- | --- |
-| Юнит | Публичная функция или правило `SharedKernel`; без БД и HTTP | Чистая логика, разбор инструкции, формат ID | xUnit v3 | `tests/Api.UnitTests` — появится после среза 0 (#16) |
-| Интеграционный | HTTP через `WebApplicationFactory<Program>` | Поведение среза, доступ, данные компании, сессии, миграции | `Microsoft.AspNetCore.Mvc.Testing`, `Testcontainers.PostgreSql` | `tests/Api.IntegrationTests` — появится после среза 0 (#16) |
-| Архитектурный | Собранные сборки в Debug | Границы модулей и вертикальных срезов | ArchUnitNET | `tests/ArchitectureTests` — появится после среза 0 (#16) |
-| Компонентный | Страница React; сеть через MSW | Отображение, состояния загрузки и ошибки, доступность | Vitest, Testing Library, MSW с типами из OpenAPI, axe | `apps/web/src` — появится после среза 0 (#16) |
-| E2E | Браузер на полном Compose | Сценарии S1–S6 и критерии готовности | Playwright TS | `apps/web/e2e` — появится после среза 0 (#16) |
-| Smoke | Полный Compose и health endpoints | `/health/ready`, отказ PostgreSQL, восстановление | Playwright или скрипт Compose | `apps/web/e2e/smoke` — появится после среза 0 (#16) |
-| Outbox | Реальная БД и ручной диспетчер | Идемпотентность, повторная доставка, `failed` после повторов | xUnit v3, `Testcontainers.PostgreSql` | `tests/Api.IntegrationTests` — появится после среза 0 (#16) |
+| Юнит | Публичная функция или правило `SharedKernel`; без БД и HTTP | Чистая логика, разбор инструкции, формат ID | xUnit v3 | `tests/Api.UnitTests` |
+| Интеграционный | HTTP через `WebApplicationFactory<Program>` | Поведение среза, доступ, данные компании, сессии, миграции | `Microsoft.AspNetCore.Mvc.Testing`, `Testcontainers.PostgreSql` | `tests/Api.IntegrationTests` |
+| Архитектурный | Собранные сборки | Границы модулей и вертикальных срезов | ArchUnitNET | `tests/ArchitectureTests` |
+| Компонентный | Страница React; сеть через MSW | Отображение, состояния загрузки и ошибки, доступность | Vitest, Testing Library, MSW с типами из OpenAPI, axe | `apps/web/src` |
+| E2E | Браузер на полном Compose | Сценарии S1–S6 и критерии готовности | Playwright TS | `apps/web/e2e` |
+| Smoke | Полный Compose и health endpoints | `/health/ready`, отказ PostgreSQL, восстановление | Playwright или скрипт Compose | `apps/web/e2e/smoke` |
 
 Тестовые проекты и `global.json` появятся в срезе 0 (#16). Скрипты `verify` — #28, job'ы CI — #29. Пути и команды ниже — целевые.
 
-Интеграционный тест — основной. Он проверяет модуль через HTTP. Юнит-тест нужен для логики без инфраструктуры.
-
-Модули Employees, Projects, Access и AgentConnections тестируются через HTTP. SharedKernel — юнит-тестами. Infrastructure — через адаптеры и интеграционные тесты.
+Интеграционный тест — основной. Модули Employees, Projects, Access и AgentConnections тестируются через HTTP. SharedKernel — юнит-тестами. Infrastructure — через адаптеры и интеграционные тесты.
 
 Чтобы `WebApplicationFactory<Program>` запустился, host открывает точку входа `Program`.
 
@@ -75,8 +72,6 @@ E2E обязателен для изменения сценария S1–S6. Д�
 | Миграция | Интеграционный тест на реальной БД |
 | Контракт API | Перегенерация OpenAPI и TS-типов |
 | Документ | Проверка ссылок и путей |
-
-Документ и переименование без поведения не требуют теста.
 
 ## Источники ожидаемых значений
 
@@ -140,13 +135,13 @@ ID создаёт `SharedKernel`. UUIDv7 содержит случайность
 
 Flaky-тест — это дефект. Исправь или удали его. Повторов нет ни на одном уровне.
 
-В Playwright задай `retries: 0` и `forbidOnly: true`. Включай trace при падении. Это правило заменяет прежний один повтор для E2E.
+В Playwright задай `retries: 0` и `forbidOnly: true`. Включай trace при падении.
 
 ## E2E
 
 E2E идёт против Docker Compose с MailHog. Вход переиспользуется через `storageState`.
 
-Используй роли и тексты. Жди видимость через web-first assertions. В CI запускай Chromium. Трассировка включается при падении.
+Используй роли и тексты. Жди видимость через web-first assertions. В CI запускай Chromium.
 
 Помечай быстрый набор меткой `@smoke`.
 
@@ -172,13 +167,11 @@ E2E идёт против Docker Compose с MailHog. Вход переиспол
 | main в CI | После merge | Все тесты. gitleaks по всей истории. |
 | `verify:full` | Перед PR с риском | `node scripts/verify.mjs --full` повторяет main локально: E2E, smoke Compose, audit, gitleaks. |
 
-Скрипты — #28, job'ы CI — #29, тестовые проекты — в срезе 0 (#16). Пока тестовых проектов нет, команды — целевые.
-
 ## Совместная работа на одной машине
 
 Ограничь число параллельных коллекций xUnit. Не запускай больше одной тяжёлой коллекции на агента.
 
-Переиспользуй контейнер Testcontainers между локальными запусками. Одна база на коллекцию. Respawn очищает данные перед тестом.
+Переиспользуй контейнер Testcontainers между локальными запусками.
 
 E2E и smoke делят Compose. Возьми один общий lock на время запуска. Не запускай их одновременно на одной машине.
 
@@ -206,4 +199,4 @@ E2E и smoke делят Compose. Возьми один общий lock на вр
 
 - Порога покрытия нет. Покрытие — ориентир, не ворота.
 - Мутационное, нагрузочное и security-тестирование не входят.
-- Содержимое GitHub Actions и защита ветки не входят. Скрипты проверок — #28, job'ы CI — #29, тестовые проекты — в срезе 0 (#16).
+- Содержимое GitHub Actions и защита ветки не входят.
