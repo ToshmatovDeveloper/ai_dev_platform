@@ -7,7 +7,7 @@ AI-first development platform. The project brief and customer requirements live 
 
 ### Issue tracker
 
-Create, read, and triage issues and specs through `gh`. See `docs/agents/issue-tracker.md`.
+Create, read, and triage issues and specs. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
