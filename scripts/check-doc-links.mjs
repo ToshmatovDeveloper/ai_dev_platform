@@ -6,6 +6,7 @@ const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 const roots = [
   "AGENTS.md",
+  "CODING_STANDARDS.md",
   "DOMAIN.md",
   "customer-requirements(1).md",
   "docs",

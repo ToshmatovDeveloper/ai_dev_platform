@@ -19,7 +19,15 @@ Before working with domain terms or architecture decisions, read `docs/agents/do
 
 ### Agent workflow
 
-Before you take a task labeled `ready-for-agent`, read `docs/agents/agent-workflow.md`.
+Before implementation, read `docs/agents/agent-workflow.md`. It defines the explicit start, delivery, and merge rules.
+
+### Human review
+
+Before planning a human check or handing over a result, read `docs/agents/human-review.md`.
+
+### Coding standards
+
+Before a Standards review, read `CODING_STANDARDS.md`.
 
 ### Testing
 
@@ -28,6 +36,12 @@ Before you write, change, or review tests, read `docs/agents/testing.md` and `do
 ### Setup
 
 After cloning, run `node scripts/link-project-skills.mjs` so Claude Code finds the skills in `.opencode/skills/`.
+
+## Start and authority
+
+Implementation starts only when the owner explicitly selects `implement` or `implement-spec`, including ordinary language that names the skill. If a request names neither, propose the entrypoint and wait for selection. An issue, a `ready-for-agent` label, preparation, or a review comment does not start implementation.
+
+Diagnosis alone does not authorize a fix. Research and prototypes authorize only their agreed scope. Within a started implementation, routine commits, push, PR updates, and confirmed review or CI fixes may proceed. Requirements changes need the owner's decision. Merge authority is defined in `docs/agents/agent-workflow.md`.
 
 ## Branches
 
