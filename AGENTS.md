@@ -55,3 +55,5 @@ at hand, one per line, each with a one-line reason to pick it.
 - The three differ in scope or approach, so the user picks a granularity, not a synonym.
 - Name the change, not the mechanics: `docs/domain-md-convention`, not `docs/edit-agents-md`.
 - Wait for the pick: create that branch, then make the change; on "no", stay where you are.
+
+A global copy of this rule lives at `~/.codex/AGENTS.md`. Keep both copies in sync.
